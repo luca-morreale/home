@@ -17,6 +17,7 @@
 (Optional)
 * Install tmux plugins: open tmux and use `<prefix> + I` to install the plugins.
 
+* Update the git profile information with yours in `.gitconfig`
 ---
 
 ## Optional steps
