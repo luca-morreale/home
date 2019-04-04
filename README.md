@@ -17,12 +17,6 @@
 (Optional)
 * Install tmux plugins: open tmux and use `<prefix> + I` to install the plugins.
 
-## SOLARIZED GNOME-TERMINAL
-(From: https://xorcode.com/code/2011/04/11/solarized-vim-eclipse-ubuntu.html)
-
-Run `. .solarize_gnome_terminal.sh` to setup your gnome-terminal with the
-solarized palette.
-
 ---
 
 ## Optional steps
