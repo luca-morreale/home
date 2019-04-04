@@ -54,24 +54,32 @@ if [ -f ~/.git-completion.bash ]; then
     source ~/.git-completion.bash
 fi
 
+################################### LAPTOP/Server poli ####################################
+if [ `hostname` == 'luca-laptop' ]; then
+    
+    # CUDA
+    export CUDA_ROOT=/usr/local/cuda-10.0/
+    export LD_LIBRARY_PATH=${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+    export LIBRARY_PATH=$LIBRARY_PATH:${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+    export CPATH=${CUDA_ROOT}include${CPATH:+:${CPATH}}
+    export PATH=${CUDA_ROOT}bin:${CUDA_ROOT}NsightCompute-2019.1${PATH:+:${PATH}}
 
-# CUDA
-# export LD_LIBRARY_PATH=/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-# export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/cuda/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-# export CPATH=/usr/local/cuda/include${CPATH:+:${CPATH}}
-# export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
-# export CUDA_ROOT=/usr/local/cuda/
 
-# texlive path
-# export PATH=/usr/local/texlive/2016/bin/x86_64-linux${PATH:+:${PATH}}
-# export INFOPATH=/usr/local/texlive/2016/texmf-dist/doc/info
-
+# elif [[ `hostname` == 'gdl_server' ]]; then
+#     
+#     # CUDA
+#     export CUDA_ROOT=/usr/local/cuda-9.2/
+#     export LD_LIBRARY_PATH=${CUDA_ROOT}/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+#     export LIBRARY_PATH=$LIBRARY_PATH:${CUDA_ROOT}/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+#     export CPATH=${CUDA_ROOT}/include${CPATH:+:${CPATH}}
+#     export PATH=${CUDA_ROOT}/bin${PATH:+:${PATH}}
+# 
+fi
 
 # PATHS
 #=======
-# export PYTHONPATH_INIT="$PYTHONPATH"
-export PATH=$HOME/.local/bin:${PATH:+:${PATH}}
-# export PATH_INIT="$PATH"
+# This is already in, so not added again
+# export PATH=$HOME/.local/bin:${PATH:+:${PATH}}
 
 # Set TMP
 export TMP='/tmp'
@@ -84,22 +92,11 @@ export EDITOR=vim
 # Ctrl-D
 IGNOREEOF=10   # Shell only exists after the 10th consecutive Ctrl-d
 
-# autojump
-[[ -s /u/visin/.autojump/etc/profile.d/autojump.sh ]] && source /u/visin/.autojump/etc/profile.d/autojump.sh
-
 # cool bash and git bash extension
 if [ -f ~/.git-prompt.sh ]; then
     source ~/.git-prompt.sh
 fi
 
-# SOLARIZED
-# if [[ $COLORTERM = gnome-* && $TERM = xterm ]]  && infocmp gnome-256color >/dev/null 2>&1; then TERM=gnome-256color; fi
-# See http://unix.stackexchange.com/questions/105926/how-to-include-commands-in-bashs-ps1-without-breaking-line-length-calculation
-
-# You can get a list of colors with:
-# for i in {0..255}; do
-#     printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
-# done
 
 if tput setaf 1 &> /dev/null; then
     tput sgr0
@@ -161,20 +158,9 @@ if tput setaf 1 &> /dev/null; then
     # RESET="\033[m"
 fi
 
-if [ -f /.dockerenv ]; then
-    BASH_COLOR=${ORANGE}
-else
-    BASH_COLOR=${GREEN}
-fi
-
-# Hide conda current env in the prompt
-if hash conda 2>/dev/null; then
-    conda config --set changeps1 False
-fi
-
 # format bash
 # RESET=${WHITE}
-PS1='\[${BASH_COLOR}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${BASH_COLOR}\]└─ ${CONDA_DEFAULT_ENV} λ \[${RESET}\]'
+PS1='\[${GREEN}\]┌─────── \u@\h\[${BLUE}\] [\w]\[${YELLOW}\]$(__git_ps1 " (%s)")\n\[${GREEN}\]└─ λ \[${RESET}\]'
 # VIRTUAL_ENV_DISABLE_PROMPT=1 source ~/Enthought/Canopy_64bit/User/bin/activate
 
 # If this is an gnome-terminal set the title to user@host:dir
@@ -198,6 +184,21 @@ export HISTTIMEFORMAT="%F %T "
 shopt -s cmdhist
 shopt -s histappend
 
-# added by Miniconda3 installer
-export PATH="$HOME/miniconda3/bin:$PATH"
 
+# added by Anaconda3 2018.12 installer
+# >>> conda init >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$(CONDA_REPORT_ERRORS=false '/home/luca/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    \eval "$__conda_setup"
+else
+    if [ -f "/home/luca/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/luca/anaconda3/etc/profile.d/conda.sh"
+        CONDA_CHANGEPS1=false conda activate base
+    else
+        \export PATH="/home/luca/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+conda deactivate
+# <<< conda init <<<

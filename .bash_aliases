@@ -1,21 +1,5 @@
-# Load GNU aliases for mac
-# Use homebrew's coreutils if possible or the standard command otherwise
-if [ -d "$HOME/.homebrew/Cellar/coreutils" ]; then
-    LATEST_COREUTILS_DIR=$(ls -td -- $HOME/.homebrew/Cellar/coreutils/*/ | head -n 1)
-    if [[ ! -z ${LATEST_COREUTILS_DIR+x} ]] && [[ -d "$LATEST_COREUTILS_DIR" ]]; then
-        export PATH=$PATH:$LATEST_COREUTILS_DIR/bin
-        alias ls='gls --color=auto'
-        alias dircolors=gdircolors
-    fi
-else
-    if [[ `uname -s` == 'Darwin' ]]; then
-        alias ls='ls -G'
-    else
-        alias ls='ls --color=auto'
-    fi
-fi
-
 # Set other ls aliases
+alias ls='ls --color=auto'
 alias ll='ls -l'
 alias lla='ls -alF'
 alias lh='ls -sh'
@@ -54,7 +38,7 @@ alias sshpw='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no
 # Force 256 colors tmux
 alias tmux="TERM=xterm-256color tmux"
 #alias tmux="tmux -2"  # Force tmux to use 256 colors
-# . $HOME/.tmux/set_tmux_config.sh
+. $HOME/.tmux/set_tmux_config.sh
 
 # Autocomplete ssh names in bash (defined in .ssh/config)
 _complete_ssh_hosts () {
@@ -75,40 +59,6 @@ _complete_ssh_hosts () {
 }
 complete -F _complete_ssh_hosts ssh
 
-# Montreal
-lisa() {
-    if [ $# == 0 ]; then
-        sshpass -f ~/.lisa ssh -YC visin@elisa1
-    elif [ $# == 1 ]; then
-        sshpass -f ~/.lisa ssh -YC -L $1:localhost:$1 visin@elisa1
-    else
-        echo "usage: sshlisa [port]"
-    fi
-}
-alias lisassh=lisa
-lisascp() {
-    sshpass -f ~/.lisa scp -Cr visin@elisa1.iro.umontreal.ca:$1 $2
-}
-lisarsync() {
-    sshpass -f ~/.lisa rsync -a -X --partial -h --progress --copy-links visin@elisa1.iro.umontreal.ca:$1 $2
-}
-alias squeue='squeue -o "%.6i %.1t %.6q %.7m %.12b %.3C %.3D %.18k %.11L %R"'
-
-# Quick and dirty installation of packages with pip from GitHub.
-ghpip() {
-    if [ $# == 0 ]; then
-        echo "usage: ghpip user/project [branch/refspec]"
-        return 1
-    fi
-    if [ $# == 1 ]; then
-        GITHUBPATH=$1
-        BRANCH=master
-    else
-        GITHUBPATH=$1
-        BRANCH=$2
-    fi
-    pip install --upgrade "git+git://github.com/$GITHUBPATH.git@$BRANCH"
-}
 
 # disk usage
 disk_usage() {
@@ -136,6 +86,8 @@ export -f cpdataset
 # Manage the weird pkscreen routine for lisa lab
 alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
 
+# Quick set GPU FLAGS
+
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
@@ -153,36 +105,33 @@ D10(){ export DISPLAY=localhost:10.0; }
 D11(){ export DISPLAY=localhost:11.0; }
 D12(){ export DISPLAY=localhost:12.0; }
 
-# DOCKER
-# ======
+# Frameworks update
+# ==================
+GITUSER='luca-morreale'
 
-alias dk="docker"
-alias dkl="docker logs"
-alias dki="docker images"
-alias dkrm="docker rm"
-alias dkps="docker ps"
-alias dkpsa="docker ps -a"
-
-# dkattach <name>: attach to existing container
-dkattach() { docker start $1 && docker attach $1; }
-# dkrun [<args>] <image>: runs a container from a docker image
-
-dkrun(){ 
-   nvidia-docker run  -ti\
-       --workdir /host$PWD \
-       --volume /:/host \
-       --env PYTHONUNBUFFERED=x \
-       --env CUDA_CACHE_PATH=/host/tmp/cuda-cache "$@"
+# conda: we don't want to mess with system-wide conda
+upconda() {
+    $HOME/.miniconda/bin/conda update conda
 }
-# dklaunch [<args>] <image> <cmd>: runs a command on a docker container; when the command finishes, it removes the container
-dklaunch(){ dkrun -ti --rm "$@"; }
-# dkpython <cmd>: launches a python2.7 command on the default docker container
-dkpython(){ dklaunch airlab/dl:latest bash -c "source activate py27; python $@"; }
-# dkipython <image> <cmd>: launches a python2.7 command a a user specified image
-dkipython(){ dklaunch $1 PY27; python "${@:2}"; }
-# dkpython3 <cmd>: launches a python3.6 command on the default docker container
-dkpython3(){ dklaunch airlab/dl:latest bash -c "source activate py36; python $@"; }
-# dkipython3 <image> <cmd>: launches a python3.6 command a a user specified image
-dkipython3(){ dklaunch $1 PY36; python "${@:2}"; }
+
+# ENVIRONMENTS
+# =============
+GDL() {
+    conda activate gdlenv
+}
+
+CLR() {
+    if [ ! -z $CONDA_DEFAULT_ENV ]; then
+        conda deactivate 
+    fi
+}
+
+export -f CLR
+export -f GDL
 
 
+alias tor-browser='/home/luca/tor-browser/Browser/start-tor-browser'
+alias searchtext='grep -rnw . -e'
+alias gitadddel='git rm $(git ls-files --deleted)'
+
+alias ldu='du -h --max-depth=1 . 2> /dev/null | sort -n -r | less'
