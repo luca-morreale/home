@@ -65,14 +65,14 @@ if [ `hostname` == 'luca-laptop' ]; then
     export PATH=${CUDA_ROOT}bin:${CUDA_ROOT}NsightCompute-2019.1${PATH:+:${PATH}}
 
 
-# elif [[ `hostname` == 'gdl_server' ]]; then
-#     
-#     # CUDA
-#     export CUDA_ROOT=/usr/local/cuda-9.2/
-#     export LD_LIBRARY_PATH=${CUDA_ROOT}/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-#     export LIBRARY_PATH=$LIBRARY_PATH:${CUDA_ROOT}/lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-#     export CPATH=${CUDA_ROOT}/include${CPATH:+:${CPATH}}
-#     export PATH=${CUDA_ROOT}/bin${PATH:+:${PATH}}
+elif [[ `hostname` == 'blue' || `hostname` == 'neuro' ]]; then
+    
+    # CUDA
+    export CUDA_ROOT=/usr/local/cuda-8.0/
+    export LD_LIBRARY_PATH=${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+    export LIBRARY_PATH=$LIBRARY_PATH:${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+    export CPATH=${CUDA_ROOT}/include${CPATH:+:${CPATH}}
+    export PATH=${CUDA_ROOT}/bin${PATH:+:${PATH}}
 # 
 fi
 
@@ -185,20 +185,3 @@ shopt -s cmdhist
 shopt -s histappend
 
 
-# added by Anaconda3 2018.12 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$(CONDA_REPORT_ERRORS=false '/home/luca/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    \eval "$__conda_setup"
-else
-    if [ -f "/home/luca/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/luca/anaconda3/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-    else
-        \export PATH="/home/luca/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-conda deactivate
-# <<< conda init <<<

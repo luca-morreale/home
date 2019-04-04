@@ -87,7 +87,7 @@ export -f cpdataset
 alias frascreen="pkscreen; sleep 5; screen -r; sleep 2"
 
 # Quick set GPU FLAGS
-
+CVD(){ echo $CUDA_VISIBLE_DEVICES; }
 CVD_CLR(){ export CUDA_VISIBLE_DEVICES=''; }
 CVD0(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}0; }
 CVD1(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}1; }
@@ -98,16 +98,6 @@ CVD5(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVIC
 CVD6(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}6; }
 CVD7(){ export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:+${CUDA_VISIBLE_DEVICES},}7; }
 CVDNONE(){ export CUDA_VISIBLE_DEVICES=-1; }
-
-# Displays
-D0(){ export DISPLAY=localhost:0.0; }
-D10(){ export DISPLAY=localhost:10.0; }
-D11(){ export DISPLAY=localhost:11.0; }
-D12(){ export DISPLAY=localhost:12.0; }
-
-# Frameworks update
-# ==================
-GITUSER='luca-morreale'
 
 # conda: we don't want to mess with system-wide conda
 upconda() {
@@ -130,8 +120,6 @@ export -f CLR
 export -f GDL
 
 
-alias tor-browser='/home/luca/tor-browser/Browser/start-tor-browser'
 alias searchtext='grep -rnw . -e'
 alias gitadddel='git rm $(git ls-files --deleted)'
-
 alias ldu='du -h --max-depth=1 . 2> /dev/null | sort -n -r | less'
