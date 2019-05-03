@@ -13,7 +13,7 @@ shopt -s histappend
 HISTSIZE=999999
 HISTFILESIZE=50000
 
-# Catch terminal window resizes properly: check the window size after each 
+# Catch terminal window resizes properly: check the window size after each
 # command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
@@ -45,7 +45,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
- 
+
 # GIT AUTOCOMPLETE
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -55,8 +55,8 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 ################################### LAPTOP/Server poli ####################################
-if [ `hostname` == 'luca-laptop' ]; then
-    
+if [[ `hostname` == 'luca-laptop' || `hostname` == 'blue' ]]; then
+
     # CUDA
     export CUDA_ROOT=/usr/local/cuda-10.0/
     export LD_LIBRARY_PATH=${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
@@ -65,15 +65,15 @@ if [ `hostname` == 'luca-laptop' ]; then
     export PATH=${CUDA_ROOT}bin:${CUDA_ROOT}NsightCompute-2019.1${PATH:+:${PATH}}
 
 
-elif [[ `hostname` == 'blue' || `hostname` == 'neuro' ]]; then
-    
+elif [[ `hostname` == 'cervino' || `hostname` == 'neuro' ]]; then
+
     # CUDA
     export CUDA_ROOT=/usr/local/cuda-8.0/
     export LD_LIBRARY_PATH=${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
     export LIBRARY_PATH=$LIBRARY_PATH:${CUDA_ROOT}lib64/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
     export CPATH=${CUDA_ROOT}/include${CPATH:+:${CPATH}}
     export PATH=${CUDA_ROOT}/bin${PATH:+:${PATH}}
-# 
+#
 fi
 
 # PATHS
