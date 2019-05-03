@@ -15,10 +15,10 @@ alias egrep='egrep --color=auto'
 command -v colordiff >/dev/null 2>&1 && { alias diff=colordiff; }
 
 # Graphical vim
-if type vimx >/dev/null 2>&1; then 
+if type vimx >/dev/null 2>&1; then
     alias vim='vimx'
     export GIT_EDITOR="vimx"
-elif type mvim >/dev/null 2>&1; then 
+elif type mvim >/dev/null 2>&1; then
     alias vim='mvim -v'
     export GIT_EDITOR="mvim -v"
 fi
@@ -112,7 +112,7 @@ GDL() {
 
 CLR() {
     if [ ! -z $CONDA_DEFAULT_ENV ]; then
-        conda deactivate 
+        conda deactivate
     fi
 }
 
@@ -123,3 +123,4 @@ export -f GDL
 alias searchtext='grep -rnw . -e'
 alias gitadddel='git rm $(git ls-files --deleted)'
 alias ldu='du -h --max-depth=1 . 2> /dev/null | sort -n -r | less'
+alias jpnb='jupyter notebook'
