@@ -179,10 +179,8 @@
 
 ## The full path to a private key file for usage with SSL/TLS.
 
-c.NotebookApp.certfile = u'/home/mciccone/.jupyter/mycert.pem'
-c.NotebookApp.keyfile = u'/home/mciccone/.jupyter/mykey.key'
 # Set ip to '*' to bind on all interfaces (ips) for the public server
-c.NotebookApp.ip = '*'
+c.NotebookApp.ip = '0.0.0.0'
 c.NotebookApp.open_browser = False
 
 # It is a good idea to set a known, fixed port for server access
@@ -223,7 +221,6 @@ c.NotebookApp.port = 9999
 #    from notebook.auth import passwd; passwd()
 #
 #  The string should be of the form type:salt:hashed-password.
-c.NotebookApp.password = u'sha1:24806421a66e:0fccca7c1792dadef606fac06fa2e8ed88f9bad8'
 
 ## Forces users to use a password for the Notebook server. This is useful in a
 #  multi user environment, for instance when everybody in the LAN can access each
