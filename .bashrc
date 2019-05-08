@@ -55,7 +55,7 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 ################################### LAPTOP/Server poli ####################################
-if [[ `hostname` == 'luca-laptop' || `hostname` == 'blue' ]]; then
+if [[ `hostname` == 'luca-laptop' || `hostname` == 'blue' || `hostname` == 'cervino' ]]; then
 
     # CUDA
     export CUDA_ROOT=/usr/local/cuda-10.0/
@@ -65,7 +65,7 @@ if [[ `hostname` == 'luca-laptop' || `hostname` == 'blue' ]]; then
     export PATH=${CUDA_ROOT}bin:${CUDA_ROOT}NsightCompute-2019.1${PATH:+:${PATH}}
 
 
-elif [[ `hostname` == 'cervino' || `hostname` == 'neuro' ]]; then
+elif [ `hostname` == 'neuro' ]; then
 
     # CUDA
     export CUDA_ROOT=/usr/local/cuda-8.0/
