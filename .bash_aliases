@@ -71,6 +71,18 @@ gpu_who() {
     for i in `nvidia-smi -q -d PIDS | grep ID | cut -d ":" -f2`; do ps -u -p "$i"; done
 }
 
+# ram usage
+ram_who() {
+    for USR in $(ps axo user:20 | sort -u)
+    do
+        ps -U $USR --no-headers -o rss 2>/dev/null | awk -v user=$USR '{ sum+=$1} END {print user, int(sum/1024) "MB"}'
+    done
+}
+
+# wait process to end
+wait-pid(){ tail --pid=$1 -f /dev/null; }
+# wait-pid <pid> ; <cmd> wait process to end then run <cmd>
+
 # rsync options
 alias rsyncopt="rsync -a -X --partial -h --progress --bwlimit=20000 --copy-links "
 alias rsyncopt_nolimit="rsync -a -X --partial -h --progress --copy-links "
